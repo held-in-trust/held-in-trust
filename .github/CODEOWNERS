@@ -1,0 +1,9 @@
+# Each line is a file pattern followed by one or more owners.
+# Order matters: the last matching pattern takes precedence.
+
+* @yusufadeagbo
+
+contracts/ @yusufadeagbo
+db/ @yusufadeagbo
+Cargo.toml @yusufadeagbo
+.github/ @yusufadeagbo

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Architecture and design questions
+    url: https://github.com/held-in-trust/held-in-trust/blob/main/ARCHITECTURE.md
+    about: Read the architecture overview before opening a design discussion.
+  - name: Compliance Module RFC
+    url: https://github.com/held-in-trust/held-in-trust/blob/main/docs/RFC.md
+    about: The compliance-module interface specification in progress.

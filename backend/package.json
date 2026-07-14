@@ -1,0 +1,18 @@
+{
+  "name": "@held-in-trust/backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Indexer + API workspace for the Held in Trust issuer backend.",
+  "license": "MIT",
+  "workspaces": ["indexer", "api"],
+  "scripts": {
+    "lint": "eslint . --ext .ts",
+    "typecheck": "tsc --noEmit -p indexer/tsconfig.json && tsc --noEmit -p api/tsconfig.json",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0",
+    "eslint": "^9.0.0"
+  }
+}

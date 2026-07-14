@@ -1,26 +1,21 @@
 # Accredited Investor Module
 
-**Status: design only, not yet implemented.**
+**Status: implemented and unit tested.** See `src/lib.rs`.
 
 A compliance module implementing the shared `is_transfer_allowed(from, to,
-amount) -> bool` interface (see `ARCHITECTURE.md` and
-`contracts/modules/jurisdiction_allowlist` for the pattern to follow): a
-transfer is allowed only if both parties hold a current accreditation
-attestation.
+amount) -> bool` interface: a transfer is allowed only if both parties hold
+a current (non-expired) accreditation.
 
-## Design notes
+Unlike `jurisdiction_allowlist`'s static boolean flag, accreditation
+**expires** — each investor has an expiry ledger, checked against
+`env.ledger().sequence()` at transfer/query time. 6 unit tests cover the
+expiry boundary (valid at exactly the expiry ledger, expired the ledger
+after), immediate revocation (setting an already-past expiry), and
+non-admin rejection.
 
-- Unlike `jurisdiction_allowlist`'s simple boolean flag, accreditation
-  typically **expires** — this module should store an expiry ledger per
-  investor and check `env.ledger().sequence() <= expiry` at transfer time,
-  not just a static allowed/disallowed flag.
-- Consider whether accreditation status should be attestable by a
-  third-party attestor address (e.g. a KYC provider) rather than only the
-  module's own admin — this is a real design decision with compliance
-  implications, not just a code detail.
+## Still open
 
-## Interface to implement
-
-Same shape as `jurisdiction_allowlist`: `initialize(admin)`,
-`set_accredited(admin, investor, expiry_ledger)`, `is_accredited(investor) ->
-bool`, `is_transfer_allowed(from, to, amount) -> bool`.
+Whether accreditation status should be attestable by a third-party attestor
+address (e.g. a KYC provider) rather than only the module's own admin — a
+real design decision with compliance implications, not yet resolved. Track
+as a follow-up if this becomes a real requirement rather than speculative.

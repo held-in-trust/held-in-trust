@@ -13,7 +13,7 @@
                  ▼               ▼               ▼
         jurisdiction_     accredited_      lockup_vesting
         allowlist         investor         (design only)
-        (implemented)     (design only)
+        (implemented)     (implemented)
                                  │
                                  │ on-chain events
                                  ▼
@@ -61,10 +61,17 @@ integration test (not a mock) against `jurisdiction_allowlist`.
 Implemented and tested. A transfer is allowed only if both `from` and `to`
 are on the module's allow-list.
 
-### `contracts/modules/accredited_investor`, `contracts/modules/lockup_vesting`
+### `contracts/modules/accredited_investor`
 
-Design only — see each directory's README for the specific open design
-questions before implementation.
+Implemented and tested (6 unit tests, including the expiry-boundary case).
+Unlike `jurisdiction_allowlist`'s static flag, accreditation expires — each
+investor has an expiry ledger checked at query time.
+
+### `contracts/modules/lockup_vesting`
+
+Design only — see its README for the specific open design question (the
+shared module interface doesn't pass sender balance, which this module
+needs) before implementation.
 
 ### `backend/indexer`
 

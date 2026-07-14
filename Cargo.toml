@@ -1,9 +1,13 @@
 [workspace]
 resolver = "2"
-members = ["contracts/compliant_token", "contracts/modules/jurisdiction_allowlist"]
-# Note: contracts/modules/accredited_investor and .../lockup_vesting are
-# design-only (README, no Cargo.toml) as of this scaffold — add them here
-# once they're implemented (see the seeded issues).
+members = [
+  "contracts/compliant_token",
+  "contracts/modules/jurisdiction_allowlist",
+  "contracts/modules/accredited_investor",
+]
+# Note: contracts/modules/lockup_vesting is design-only (README, no
+# Cargo.toml) as of this scaffold — add it here once implemented (see the
+# seeded issues; it's blocked on the RFC §3 interface decision).
 
 [workspace.dependencies]
 soroban-sdk = "25.3.1"

@@ -8,6 +8,21 @@ platform.
 > **Status: pre-alpha, actively being designed.** See [Roadmap](#roadmap) and
 > the seeded issues for what's actually built versus planned.
 
+## Live on testnet
+
+Both contracts are deployed, initialized, wired together (the allow-list
+module is registered with the token), and verified working end to end on
+Stellar Testnet — real cross-contract compliance enforcement, not a mock:
+
+| Contract | Address |
+|---|---|
+| `compliant_token` | [`CCLAFGZ6VMRASUYCARYK2WNF2NJA3YVBVELNC2IY6WR7EAZUGIBNUBMF`](https://stellar.expert/explorer/testnet/contract/CCLAFGZ6VMRASUYCARYK2WNF2NJA3YVBVELNC2IY6WR7EAZUGIBNUBMF) |
+| `jurisdiction_allowlist` | [`CB2MCM3QHHKOQA2SXYQCHWQWS2Z2HKOVE3QJ7LJHPNVI4V2NJ4L2T425`](https://stellar.expert/explorer/testnet/contract/CB2MCM3QHHKOQA2SXYQCHWQWS2Z2HKOVE3QJ7LJHPNVI4V2NJ4L2T425) |
+
+`e2e/02_issuance_lifecycle_flow.sh` genuinely exercises: mint → transfer to a
+non-allow-listed investor (correctly rejected on-chain) → allow-list them →
+same transfer now succeeds.
+
 ## The problem
 
 RWA is one of Stellar's fastest-growing verticals — roughly $3B tokenized in

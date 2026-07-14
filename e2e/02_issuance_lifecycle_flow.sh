@@ -17,7 +17,12 @@ ROUND=$((ROUND + 1))
 echo "${ROUND}" > "${COUNTER_FILE}"
 MINT_AMOUNT=$((ROUND * 1000))
 
-log "allow-listing investor A"
+# mint's compliance check runs is_transfer_allowed(admin, to, amount) — both
+# parties must be allow-listed, since jurisdiction_allowlist checks from AND
+# to. The admin only needs to be allow-listed once; safe to repeat.
+log "allow-listing admin (mint's implicit 'from' party) and investor A"
+invoke jurisdiction_allowlist "${ADMIN}" -- set_allowed \
+  --admin "$(addr "${ADMIN}")" --user "$(addr "${ADMIN}")" --allowed true >/dev/null
 invoke jurisdiction_allowlist "${ADMIN}" -- set_allowed \
   --admin "$(addr "${ADMIN}")" --user "$(addr "${INVESTOR_A}")" --allowed true >/dev/null
 

@@ -14,9 +14,9 @@ for id in "${ADMIN}" "${INVESTOR_A}" "${INVESTOR_B}"; do
 done
 
 log "building contract wasms"
-( cd "${REPO_ROOT}" && cargo build --target wasm32-unknown-unknown --release )
+( cd "${REPO_ROOT}" && cargo build --target wasm32v1-none --release )
 
-WASM_DIR="${REPO_ROOT}/target/wasm32-unknown-unknown/release"
+WASM_DIR="${REPO_ROOT}/target/wasm32v1-none/release"
 deploy_if_needed compliant_token "${WASM_DIR}/held_in_trust_compliant_token.wasm"
 deploy_if_needed jurisdiction_allowlist "${WASM_DIR}/held_in_trust_jurisdiction_allowlist.wasm"
 

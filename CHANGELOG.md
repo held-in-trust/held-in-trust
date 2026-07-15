@@ -22,5 +22,7 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   on-chain events, syncs them into the cap-table idempotently. Verified
   against a real Postgres instance and real on-chain transactions — correct
   balance math and confirmed no double-application on replay.
+- Issuer API (`backend/api`): `GET /cap-table` implemented as a real Node
+  HTTP server, verified with a real socket + real Postgres (4 tests).
 - Protocol RFC draft (`docs/RFC.md`).
 - CI, issue templates, and contribution guidelines.

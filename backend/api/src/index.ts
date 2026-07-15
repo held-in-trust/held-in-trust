@@ -1,12 +1,9 @@
 /**
- * Held in Trust issuer API.
- *
- * Design skeleton over the cap-table schema in
- * `db/migrations/001_cap_table.sql` (verified against a live Postgres
- * instance during scaffolding). Not yet wired to a real GraphQL/REST server
- * — see the seeded issues ("Build GraphQL API for issuer backend",
- * "Build disclosure-report generator v1").
+ * Held in Trust issuer API — real implementation over the cap-table schema
+ * in `db/migrations/001_cap_table.sql`.
  */
+
+import type { Pool } from "pg";
 
 export interface CapTableEntry {
   address: string;
@@ -21,22 +18,33 @@ export interface DisclosureReport {
 }
 
 /**
- * @remarks Not yet implemented — requires a Postgres connection and a
- * decision on the disclosure-report format (RFC §5, currently undrafted).
+ * Returns the cap table (non-zero holders) for a given issuer's
+ * `compliant_token` contract id, ordered by balance descending.
  */
 export async function getCapTable(
-  _databaseUrl: string,
-  _issuerContractId: string,
+  pool: Pool,
+  issuerContractId: string,
 ): Promise<CapTableEntry[]> {
-  throw new Error("not implemented — see CONTRIBUTING.md and the seeded issues");
+  const result = await pool.query<CapTableEntry>(
+    `SELECT h.address, h.balance::text AS balance
+     FROM holders h
+     JOIN issuers i ON i.id = h.issuer_id
+     WHERE i.contract_id = $1 AND h.balance > 0
+     ORDER BY h.balance DESC`,
+    [issuerContractId],
+  );
+  return result.rows;
 }
 
 /**
- * @remarks Not yet implemented — see {@link getCapTable}.
+ * @remarks Not yet implemented — the disclosure-report format itself is
+ * undrafted (RFC §5 explicitly flags this as needing real issuer
+ * requirements input first, not an engineering guess). getCapTable above is
+ * the real building block this will be built on.
  */
 export async function generateDisclosureReport(
-  _databaseUrl: string,
+  _pool: Pool,
   _issuerContractId: string,
 ): Promise<DisclosureReport> {
-  throw new Error("not implemented — see CONTRIBUTING.md and the seeded issues");
+  throw new Error("not implemented — see docs/RFC.md §5 and the seeded issues");
 }

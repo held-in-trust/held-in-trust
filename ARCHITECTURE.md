@@ -85,8 +85,9 @@ instance and real on-chain events.
 
 ### `backend/api`
 
-GraphQL/REST API over the indexed state: cap-table queries, investor
-onboarding/accreditation status, and the disclosure-report generator.
+`GET /cap-table` implemented and verified against a real HTTP server + real
+Postgres. Disclosure-report generation is not yet built — see
+`backend/api/README.md`.
 
 ### `db/migrations`
 

@@ -12,16 +12,23 @@ platform.
 
 Both contracts are deployed, initialized, wired together (the allow-list
 module is registered with the token), and verified working end to end on
-Stellar Testnet — real cross-contract compliance enforcement, not a mock:
+Stellar Testnet — real cross-contract compliance enforcement, not a mock.
+`compliant_token` was redeployed at the address below after adding real
+`#[contractevent]` events (`MintEvent`, `TransferEvent`,
+`ModuleRegisteredEvent`) for the indexer to consume:
 
 | Contract | Address |
 |---|---|
-| `compliant_token` | [`CCLAFGZ6VMRASUYCARYK2WNF2NJA3YVBVELNC2IY6WR7EAZUGIBNUBMF`](https://stellar.expert/explorer/testnet/contract/CCLAFGZ6VMRASUYCARYK2WNF2NJA3YVBVELNC2IY6WR7EAZUGIBNUBMF) |
+| `compliant_token` | [`CC5DWOARRFSMWI6MS2E34WOZBSSN7LJ4ZKTJZYLWRPKTDNCMH74GNDXT`](https://stellar.expert/explorer/testnet/contract/CC5DWOARRFSMWI6MS2E34WOZBSSN7LJ4ZKTJZYLWRPKTDNCMH74GNDXT) |
 | `jurisdiction_allowlist` | [`CB2MCM3QHHKOQA2SXYQCHWQWS2Z2HKOVE3QJ7LJHPNVI4V2NJ4L2T425`](https://stellar.expert/explorer/testnet/contract/CB2MCM3QHHKOQA2SXYQCHWQWS2Z2HKOVE3QJ7LJHPNVI4V2NJ4L2T425) |
 
 `e2e/02_issuance_lifecycle_flow.sh` genuinely exercises: mint → transfer to a
 non-allow-listed investor (correctly rejected on-chain) → allow-list them →
 same transfer now succeeds.
+
+The indexer (`backend/indexer`) fetches and decodes these events for real
+against this deployment — see its README for the specific transaction
+hashes and verified balance math.
 
 ## The problem
 

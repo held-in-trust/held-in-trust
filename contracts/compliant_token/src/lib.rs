@@ -13,9 +13,31 @@
 //! standard cross-contract-call semantics), which is also fail-closed.
 
 use soroban_sdk::{
-    contract, contracterror, contractimpl, contracttype, vec, Address, Env, IntoVal, Symbol, Val,
-    Vec,
+    contract, contracterror, contractevent, contractimpl, contracttype, vec, Address, Env, IntoVal,
+    Symbol, Val, Vec,
 };
+
+#[contractevent]
+pub struct MintEvent {
+    #[topic]
+    pub to: Address,
+    pub amount: i128,
+}
+
+#[contractevent]
+pub struct TransferEvent {
+    #[topic]
+    pub from: Address,
+    #[topic]
+    pub to: Address,
+    pub amount: i128,
+}
+
+#[contractevent]
+pub struct ModuleRegisteredEvent {
+    #[topic]
+    pub module: Address,
+}
 
 #[contracterror]
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
@@ -62,8 +84,9 @@ impl CompliantTokenContract {
             .instance()
             .get(&DataKey::Modules)
             .unwrap_or(Vec::new(&env));
-        modules.push_back(module);
+        modules.push_back(module.clone());
         env.storage().instance().set(&DataKey::Modules, &modules);
+        ModuleRegisteredEvent { module }.publish(&env);
         Ok(())
     }
 
@@ -80,7 +103,8 @@ impl CompliantTokenContract {
         let balance = Self::balance(env.clone(), to.clone());
         env.storage()
             .persistent()
-            .set(&DataKey::Balance(to), &(balance + amount));
+            .set(&DataKey::Balance(to.clone()), &(balance + amount));
+        MintEvent { to, amount }.publish(&env);
         Ok(())
     }
 
@@ -98,10 +122,11 @@ impl CompliantTokenContract {
         let to_balance = Self::balance(env.clone(), to.clone());
         env.storage()
             .persistent()
-            .set(&DataKey::Balance(from), &(from_balance - amount));
+            .set(&DataKey::Balance(from.clone()), &(from_balance - amount));
         env.storage()
             .persistent()
-            .set(&DataKey::Balance(to), &(to_balance + amount));
+            .set(&DataKey::Balance(to.clone()), &(to_balance + amount));
+        TransferEvent { from, to, amount }.publish(&env);
         Ok(())
     }
 

@@ -8,9 +8,11 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@stellar/stellar-sdk": "^16.0.1",
     "pg": "^8.13.0"
   },
   "devDependencies": {

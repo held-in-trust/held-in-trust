@@ -11,6 +11,16 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `compliant_token` base contract with a pluggable compliance-module
   interface, implemented and unit tested.
 - `jurisdiction_allowlist` compliance module, implemented and unit tested.
-- Postgres migration for the cap-table schema (`db/migrations/001_cap_table.sql`).
+- `accredited_investor` compliance module (expiry-based accreditation),
+  implemented and unit tested.
+- Postgres migration for the cap-table schema (`db/migrations/001_cap_table.sql`,
+  `002_indexed_events_dedup_key.sql`).
+- Both contracts deployed and verified on Stellar Testnet with a passing
+  `e2e/` suite; `compliant_token` redeployed with real `#[contractevent]`
+  events for mint/transfer/register_module.
+- Real Soroban event indexer (`backend/indexer`): fetches and decodes live
+  on-chain events, syncs them into the cap-table idempotently. Verified
+  against a real Postgres instance and real on-chain transactions — correct
+  balance math and confirmed no double-application on replay.
 - Protocol RFC draft (`docs/RFC.md`).
 - CI, issue templates, and contribution guidelines.

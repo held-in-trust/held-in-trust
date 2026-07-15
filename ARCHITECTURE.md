@@ -75,10 +75,13 @@ needs) before implementation.
 
 ### `backend/indexer`
 
-Listens to `compliant_token` contract events and mirrors cap-table state
-(balances, module registrations) into Postgres. Event-sourcing pattern,
-following the same architectural style as this account's other backend
-project (SubTrackr).
+Implemented and verified. Fetches `compliant_token`'s `#[contractevent]`
+events via Soroban RPC and mirrors cap-table state (balances, module
+registrations) into Postgres, idempotently (Stellar's own event id is the
+dedup key). Event-sourcing pattern, following the same architectural style
+as this account's other backend project (SubTrackr). See
+`backend/indexer/README.md` for what was verified against a real Postgres
+instance and real on-chain events.
 
 ### `backend/api`
 
